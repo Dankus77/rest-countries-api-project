@@ -1,12 +1,21 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, FC} from 'react';
 import { Link } from 'react-router-dom';
 import Filter from '../Filter/Filter';
 
+interface Country {
+    name: string;
+    population: number;
+    region: string;
+    capital: string;
+    flag: string;
+    numericCode: string;
+}
+
 const url = "https://restcountries.com/v2/all";
 
-const Countries = () => {
+const Countries: FC = () => {
 
-const [countries, setCountries] = useState([]);
+const [countries, setCountries] = useState<Country[]>([]);
 
 
 useEffect(() =>{
@@ -18,13 +27,13 @@ setCountries(data);
 fetchCountries();
 }, [])
 
-const inputRef = useRef();
+const inputRef = useRef<HTMLInputElement>(null);
 
 const getCountryByName = async () => {
     
-    const searchValue = inputRef.current.value;
+    const searchValue = inputRef.current?.value;
 
-    if(searchValue.trim()) {
+    if(searchValue?.trim()) {
     const response = await fetch(`https://restcountries.com/v2/name/${searchValue}`)
     const data = await response.json()
     setCountries(data)
@@ -32,7 +41,7 @@ const getCountryByName = async () => {
 
 }
 
-const getCountryByRegion = async (region) => {
+const getCountryByRegion = async (region: string) => {
     const response = await fetch(`https://restcountries.com/v2/region/${region}`)
     const data = await response.json()
     setCountries(data)
@@ -54,10 +63,10 @@ return (
 </form>
 <section className="countries">
 {countries.map(country => {
-const {name, population, region, capital, flag, alpha2Code} = country;
+const {name, population, region, capital, flag, numericCode} = country;
 
 return (
-    <Link to={`/countries/${name}`} key={alpha2Code}> 
+    <Link to={`/countries/${name}`} key={numericCode}> 
     
 <article className="country-container">
 <div className='flag'>

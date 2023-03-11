@@ -1,9 +1,15 @@
-import React from 'react';
+import React, {FC} from 'react';
 
 
-    const Filter = ({ onRegionChange }) => {
+
+    interface Props {
+    onRegionChange: (region: string) => void;
+  }
+  
+    const Filter:FC<Props> = ({ onRegionChange }) => {
+        
       
-        const handleRegionChange = (event) => {
+        const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
           const region = event.target.value;
           onRegionChange(region);
         }
@@ -14,6 +20,7 @@ import React from 'react';
     <>
    
     <div className="select">
+    <label htmlFor="select">Select a region:</label>
     <select name="select" id="select" onChange={handleRegionChange}>
         <option value="Filter by region">Filter by region</option>
         <option value="Africa">Africa</option>
